@@ -1,0 +1,114 @@
+# 1. Start with a lightweight web server image
+FROM nginx:alpine
+
+# 2. Copy local website files into the default Nginx folder
+# (Students should create an 'index.html' file in the same folder as this Dockerfile)
+COPY index.html /usr/share/nginx/html/index.html
+
+# 3. Inform the user that the container listens on port 80
+EXPOSE 80
+
+# Note: Nginx starts automatically, no CMD command is strictly required here
+
+
+2
+# 1. Use the official Python runtime environment
+FROM python:3.11-slim
+
+# 2. Create and switch to a dedicated application directory inside the container
+WORKDIR /app
+
+# 3. Copy only the dependency file first (optimises build caching)
+COPY requirements.txt .
+
+# 4. Install the Python packages listed in the requirements file
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Copy the actual Python script code into the container
+COPY main.py .
+
+# 6. Set an environment variable (optional demonstration)
+ENV APP_ENV=student_demo
+
+# 7. Define the command to run the script when the container starts
+CMD ["python", "main.py"]
+
+3
+# 1. Use Node.js environment
+FROM node:20-alpine
+
+# 2. Set the working directory
+WORKDIR /usr/src/app
+
+# 3. Copy package configuration files
+COPY package*.json ./
+
+# 4. Install dependencies
+RUN npm install
+
+# 5. Copy the rest of the application source code
+COPY . .
+
+# 6. Expose the port the app runs on
+EXPOSE 3000
+
+# 7. Start the app using a development script (e.g., using nodemon)
+CMD ["npm", "run", "dev"]
+
+
+docker build -t node-api .
+# Windows (PowerShell):
+docker run -p 3000:3000 -v ${PWD}:/usr/src/app node-api
+
+
+
+
+C#
+
+1. The C# Code (Program.cs)Create a file named Program.cs and paste this simple Web API code. It sets up a server that responds with a message when visited.csharpvar builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+// The URL route that students can test
+app.MapGet("/", () => new { Message = "Hello World from C# inside Docker!" });
+
+app.Run();
+Use code with caution.2. The Project File (StudentApi.csproj)Create a file named StudentApi.csproj. This tells the .NET engine what kind of app it is and what version to use.xml<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
+Use code with caution.3. The Docker Ignore File (.dockerignore)Create a file named .dockerignore. This is a critical teaching point: it prevents the student's local computer files from conflicting with the container's Linux environment.textbin/
+obj/
+.dockerignore
+Dockerfile
+Use code with caution.4. The Dockerfile (Dockerfile)Create a file named Dockerfile (no file extension). This uses the industry-standard multi-stage build process.dockerfile# STAGE 1: Compile the application using the SDK
+FROM ://microsoft.com AS build-env
+WORKDIR /app
+
+# Copy the project file and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the source code and compile the release binaries
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# STAGE 2: Run the application using the lightweight Runtime
+FROM ://microsoft.com
+WORKDIR /app
+
+# Copy compiled files from Stage 1
+COPY --from=build-env /app/out .
+
+# Expose the default .NET container port
+EXPOSE 8080
+
+# Start the application
+ENTRYPOINT ["dotnet", "StudentApi.dll"]
+Use code with caution.5. Student Instructions (How to Run It)Instruct your students to place all four files in the exact same folder, open their terminal (PowerShell or Bash) inside that folder, and run these commands:Build the Docker Image:bashdocker build -t csharp-student-api .
+Use code with caution.Run the Docker Container:bashdocker run -d -p 5000:8080 --name my-first-api csharp-student-api
+Use code with caution.Test the URL:Open a web browser and navigate to: http://localhost:5000
