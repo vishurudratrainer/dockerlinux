@@ -1,0 +1,57 @@
+Here are the `docker run` commands for MySQL, PostgreSQL, and SQL Server formatted as single, copy-pasteable lines:
+
+### 1. MySQL
+
+```bash
+docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=my_strong_password -e MYSQL_DATABASE=studentdb -p 3306:3306 -v mysql_data:/var/lib/mysql mysql:latest
+
+```
+
+### 2. PostgreSQL
+
+```bash
+docker run -d --name postgres-container -e POSTGRES_PASSWORD=my_strong_password -e POSTGRES_DB=studentdb -p 5432:5432 -v pg_data:/var/lib/postgresql/data postgres:latest
+
+```
+
+### 3. Microsoft SQL Server
+
+```bash
+docker run -d --name mssql-container -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ng_Password!23" -p 1433:1433 -v mssql_data:/var/opt/mssql mcr.microsoft.com/mssql/server:2022-latest
+
+```
+
+---
+
+
+Here are single-line commands to create a new database inside each of your running database containers using `docker exec`:
+
+### 1. MySQL
+
+*(Logs into the container using root and executes the create database command)*
+
+```bash
+docker exec -it mysql-container mysql -u root -pmy_strong_password -e "CREATE DATABASE my_new_db;"
+
+```
+
+### 2. PostgreSQL
+
+*(Executes the query as the default `postgres` user)*
+
+```bash
+docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE my_new_db;"
+
+```
+
+### 3. Microsoft SQL Server
+
+*(Uses Microsoft's built-in `sqlcmd` tool via `sa` user and your password)*
+
+```bash
+docker exec -it mssql-container /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "Str0ng_Password!23" -C -Q "CREATE DATABASE my_new_db;"
+
+```
+
+---
+

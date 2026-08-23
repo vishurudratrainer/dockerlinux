@@ -1,0 +1,185 @@
+My apologies! Markdown tables can sometimes break when multi-line code formatting is placed directly inside table cells depending on the renderer.
+
+Here is a clean, perfectly structured text-based cheat sheet where every single command block is isolated and completely easy to copy, without relying on complex table markup.
+
+---
+
+### 📋 Ultimate Dockerfile Command Cheat Sheet
+
+#### 1. `FROM`
+
+* **Purpose:** Sets the base operating system or runtime image for your build. It **must** be the first instruction in a Dockerfile.
+* **Syntax / Copy:**
+
+```dockerfile
+FROM <image>:<tag>
+
+```
+
+* **Example:**
+
+```dockerfile
+FROM python:3.11-slim
+
+```
+
+#### 2. `WORKDIR`
+
+* **Purpose:** Sets the working directory inside the container 
+for any subsequent `RUN`, `COPY`, or `CMD` instructions.
+* **Syntax / Copy:**
+
+```dockerfile
+WORKDIR <path>
+
+```
+
+* **Example:**
+
+```dockerfile
+WORKDIR /app
+
+```
+
+#### 3. `COPY`
+
+* **Purpose:** Copies files or folders from your local host machine into the container's filesystem.
+* **Syntax / Copy:**
+
+```dockerfile
+COPY <src> <dest>
+
+```
+
+* **Example:**
+
+```dockerfile
+COPY . .
+
+```
+
+#### 4. `RUN`
+
+* **Purpose:** Executes commands *during the build phase*
+ (e.g., installing system dependencies or packages)
+  and creates a new image layer.
+* **Syntax / Copy:**
+
+```dockerfile
+RUN <command>
+
+```
+
+* **Example:**
+
+```dockerfile
+RUN apt-get update && apt-get install -y curl
+
+```
+
+#### 5. `ENV`
+
+* **Purpose:** Sets persistent environment variables 
+that remain baked into the container and available at runtime.
+* **Syntax / Copy:**
+
+```dockerfile
+ENV <key>=<value>
+
+```
+
+* **Example:**
+
+```dockerfile
+ENV PORT=3000
+
+```
+
+#### 6. `ARG`
+
+* **Purpose:** Defines a variable that can only be passed *at build-time* using the `--build-arg` flag.
+* **Syntax / Copy:**
+
+```dockerfile
+ARG <name>=<default_value>
+
+```
+
+* **Example:**
+
+```dockerfile
+ARG NODE_VERSION=20
+
+```
+
+#### 7. `EXPOSE`
+
+* **Purpose:** Documents which network port the container listens on at runtime (acts as metadata/documentation).
+* **Syntax / Copy:**
+
+```dockerfile
+EXPOSE <port>
+
+```
+
+* **Example:**
+
+```dockerfile
+EXPOSE 8000
+
+```
+
+#### 8. `USER`
+
+* **Purpose:** Switches away from the default root user 
+to a restricted user for improved container security.
+* **Syntax / Copy:**
+
+```dockerfile
+USER <username_or_uid>
+
+```
+
+* **Example:**
+
+```dockerfile
+USER nonroot
+
+```
+
+#### 9. `CMD`
+
+* **Purpose:** Specifies the default command executed when the container starts. Can be easily overridden from the command line.
+* **Syntax / Copy:**
+
+```dockerfile
+CMD ["executable", "param1", "param2"]
+
+```
+
+* **Example:**
+
+```dockerfile
+CMD ["python", "main.py"]
+
+```
+
+#### 10. `ENTRYPOINT`
+
+* **Purpose:** Configures a container that will run strictly as an executable. Harder to override than `CMD`.
+* **Syntax / Copy:**
+
+```dockerfile
+ENTRYPOINT ["executable", "param1"]
+
+```
+
+* **Example:**
+
+```dockerfile
+ENTRYPOINT ["dotnet", "App.dll"]
+
+```
+
+---
+

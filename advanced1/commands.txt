@@ -1,0 +1,5 @@
+# Build passing an argument
+docker build --build-arg BUILD_VERSION=v2.5-PROD -t container-detective .
+
+# Run it
+docker run --rm container-detective
