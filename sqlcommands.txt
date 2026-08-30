@@ -11,6 +11,8 @@ docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=my_strong_password -
 
 ```bash
 docker run -d --name postgres-container -e POSTGRES_PASSWORD=my_strong_password -e POSTGRES_DB=studentdb -p 5432:5432 -v pg_data:/var/lib/postgresql/data postgres:latest
+docker run -d --name postgres-container -e POSTGRES_PASSWORD=my_strong_password -e POSTGRES_DB=studentdb -p 5432:5432  postgres:latest
+
 
 ```
 

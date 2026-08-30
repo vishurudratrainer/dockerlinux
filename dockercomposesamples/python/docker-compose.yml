@@ -1,0 +1,5 @@
+services:
+  simple:
+    build: .
+    container_name: app32
+  
