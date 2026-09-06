@@ -1,0 +1,25 @@
+
+services:
+  api:
+    build: ./NetApi
+    ports:
+      - "5000:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Database=mydb;Username=postgres;Password=secret
+    depends_on:
+      postgres_db:
+        condition: service_healthy # Wait until Postgres reports it is fully ready to accept queries
+
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

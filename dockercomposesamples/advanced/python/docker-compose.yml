@@ -1,0 +1,13 @@
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+
+  cache:
+    image: redis:alpine
+    container_name: redis_cache

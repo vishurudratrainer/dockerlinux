@@ -1,0 +1,60 @@
+version: '3.8'
+
+networks:
+  frontend_net:
+    driver: bridge
+  backend_net:
+    driver: bridge
+
+services:
+  # 1. Nginx Load Balancer / Reverse Proxy
+  load_balancer:
+    image: nginx:alpine
+    container_name: nginx_lb
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - frontend_net
+    depends_on:
+      - web_app
+
+  # 2. Scalable Web Frontend Application (Node.js)
+  web_app:
+    build: ./node-web
+    # REMOVED container_name here so Docker can safely handle replicas!
+    networks:
+      - frontend_net
+      - backend_net
+    deploy:
+      replicas: 3
+    environment:
+      - PORT=3000
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq_broker:5672
+    depends_on:
+      - rabbitmq_broker
+    restart: always
+
+  # 3. Message Broker (RabbitMQ with Management Dashboard)
+  rabbitmq_broker:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq_broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend_net
+    restart: unless-stopped
+
+  # 4. Background Data Consumer (Python Worker)
+  event_consumer:
+    build: ./python-consumer
+    container_name: python_event_consumer
+    networks:
+      - backend_net
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq_broker:5672
+    depends_on:
+      - rabbitmq_broker
+    restart: always

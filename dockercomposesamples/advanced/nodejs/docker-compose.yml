@@ -1,0 +1,22 @@
+
+services:
+  app:
+    build: . # Builds the Dockerfile in the current directory
+    container_name: node_app
+    ports:
+      - "3000:3000" # Maps local port 3000 to container port 3000
+    environment:
+      - MONGO_URI=mongodb://db:27017/testdb # Connects using the service name 'db' as the host
+    depends_on:
+      - db # Ensures the database starts before the app
+
+  db:
+    image: mongo:latest # Pulls official MongoDB image from Docker Hub
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db # Persists data even if the container is destroyed
+
+volumes:
+  mongo_data: # Declares the named volume for data persistence

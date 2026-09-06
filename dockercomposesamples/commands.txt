@@ -1,0 +1,15 @@
+
+## 🛠️ Essential Commands Cheat Sheet (Last 5 Mins)
+
+Leave these core terminal commands on the screen for students:
+
+| Command | Action |
+| --- | --- |
+| `docker compose up --build` | Builds local source code images and starts all services in the foreground. |
+| `docker compose up -d` | Starts all containers in **detached mode** (background). |
+| `docker compose ps` | Lists status, ports, and names of active project containers. |
+| `docker compose logs -f` | Streams consolidated real-time logs from all running services. |
+| `docker compose down` | Safely stops and removes containers and internal networks. |
+| `docker compose down -v` | Stops containers **and completely wipes out data volumes** (useful for hard resets). |
+
+docker compose up -d --scale web=5

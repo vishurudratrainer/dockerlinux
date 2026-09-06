@@ -1,0 +1,9 @@
+services:
+  web:
+    image: hashicorp/http-echo:latest
+    container_name: echo_server
+    ports:
+      - "80:5678"
+    command: ["-text=Hello from replica container!"]
+    deploy:
+      replicas: 3 # Instantly spins up 3 parallel instances of this exact container

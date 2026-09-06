@@ -1,0 +1,10 @@
+docker compose up --build -d
+docker compose ps
+http://localhost
+docker compose logs -f event_consumer
+http://localhost:15672
+Username: guest
+
+Password: guest
+
+docker compose down
