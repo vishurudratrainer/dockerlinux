@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodeweb-pod
+spec:
+  containers:
+  - name: web-container
+    image: kornkitti/express-hello-world
